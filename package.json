@@ -1,0 +1,19 @@
+{
+  "name": "resp",
+  "version": "0.0.0",
+  "description": "0.1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "author": {
+    "name": "Michael Schoonmaker",
+    "email": "michael.r.schoonmaker@gmail.com",
+    "url": "github.com/Schoonology"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "mocha": "~1.17.1"
+  }
+}
