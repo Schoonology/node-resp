@@ -16,6 +16,10 @@ describe('Resp', function () {
       })).to.equal('-BADERR Some message\r\n')
     })
 
+    it('should stringify Error objects', function () {
+      expect(resp.stringify(new Error('Native message'))).to.equal('-Error Native message\r\n')
+    })
+
     it('should stringify booleans', function () {
       expect(resp.stringify(true)).to.equal(':1\r\n')
     })
@@ -31,6 +35,17 @@ describe('Resp', function () {
     it('should stringify arrays', function () {
       expect(resp.stringify([1, 2, 'foo', 'bar', 5, false]))
         .to.equal('*6\r\n:1\r\n:2\r\n$3\r\nfoo\r\n$3\r\nbar\r\n:5\r\n:0\r\n')
+    })
+
+    it('should stringify arrays of Errors', function () {
+      expect(resp.stringify([new Error('message')]))
+        .to.equal('*1\r\n-Error message\r\n')
+    })
+
+    it('should fail on other Objects', function () {
+      expect(function () {
+        resp.stringify({})
+      }).to.throw(TypeError)
     })
   })
 
@@ -63,6 +78,12 @@ describe('Resp', function () {
     it('should parse arrays', function () {
       expect(resp.parse('*6\r\n:1\r\n:2\r\n$3\r\nfoo\r\n$3\r\nbar\r\n:5\r\n:0\r\n'))
         .to.deep.equal([1, 2, 'foo', 'bar', 5, 0])
+    })
+
+    it('should fail on bad input', function () {
+      expect(function () {
+        resp.parse('invalid')
+      }).to.throw(SyntaxError)
     })
   })
 })
