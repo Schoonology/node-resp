@@ -1,6 +1,7 @@
 # Resp
 
-An implementation of the Redis Encoding and Serialization Protocol for Node.js.
+An implementation of the [Redis Encoding and Serialization Protocol][resp] for
+Node.js.
 
 ## Example
 
@@ -38,3 +39,5 @@ issue.
 
  - Optimization
  - Transform streams
+
+[resp]: http://redis.io/topics/protocol
