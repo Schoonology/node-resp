@@ -42,6 +42,16 @@ describe('Resp', function () {
         .to.equal('*1\r\n-Error message\r\n')
     })
 
+    it('should stringify null', function () {
+      expect(resp.stringify(null))
+        .to.equal('$-1\r\n')
+    })
+
+    it('should stringify undefined as null', function () {
+      expect(resp.stringify())
+        .to.equal('$-1\r\n')
+    })
+
     it('should fail on other Objects', function () {
       expect(function () {
         resp.stringify({})
@@ -80,10 +90,32 @@ describe('Resp', function () {
         .to.deep.equal([1, 2, 'foo', 'bar', 5, 0])
     })
 
+    it('should parse null bulk strings', function () {
+      expect(resp.parse('$-1\r\n'))
+        .to.equal(null)
+    })
+
+    it('should parse null arrays', function () {
+      expect(resp.parse('*-1\r\n'))
+        .to.equal(null)
+    })
+
     it('should fail on bad input', function () {
       expect(function () {
         resp.parse('invalid')
       }).to.throw(SyntaxError)
     })
+  })
+
+  describe('round trip', function () {
+    function generateTest(value) {
+      it(JSON.stringify(value), function () {
+        expect(resp.parse(resp.stringify(value))).to.deep.equal(value)
+      })
+    }
+
+    generateTest(['WORK', 1000])
+    generateTest([null])
+    generateTest([{ message: 'Status' }, 42, 0, null, '', 'foobar'])
   })
 })
